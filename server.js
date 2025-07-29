@@ -36,6 +36,18 @@ connectDB();
 app.use(cors());
 app.use(express.json());
 
+// Test endpoint to check environment variables (must be before static files)
+app.get('/api/test-env', (req, res) => {
+    res.json({
+        hasMongoDB: !!process.env.MONGODB_URI,
+        mongoDBLength: process.env.MONGODB_URI ? process.env.MONGODB_URI.length : 0,
+        mongoDBStart: process.env.MONGODB_URI ? process.env.MONGODB_URI.substring(0, 20) : 'none',
+        hasJWT: !!process.env.JWT_SECRET,
+        hasStripe: !!process.env.STRIPE_SECRET_KEY,
+        hasEmail: !!process.env.EMAIL_USER
+    });
+});
+
 // Protect premium files from direct access
 app.use('/assets/Tools', (req, res, next) => {
     res.status(403).json({ message: 'Access denied. Premium content requires authentication.' });
@@ -112,18 +124,6 @@ app.get('/api/trending-news', async (req, res) => {
         // If file doesn't exist or is empty, return an empty array
         res.json([]);
     }
-});
-
-// Test endpoint to check environment variables
-app.get('/api/test-env', (req, res) => {
-    res.json({
-        hasMongoDB: !!process.env.MONGODB_URI,
-        mongoDBLength: process.env.MONGODB_URI ? process.env.MONGODB_URI.length : 0,
-        mongoDBStart: process.env.MONGODB_URI ? process.env.MONGODB_URI.substring(0, 20) : 'none',
-        hasJWT: !!process.env.JWT_SECRET,
-        hasStripe: !!process.env.STRIPE_SECRET_KEY,
-        hasEmail: !!process.env.EMAIL_USER
-    });
 });
 
 // Start server
