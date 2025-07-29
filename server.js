@@ -8,6 +8,15 @@ require('dotenv').config();
 const app = express();
 const PORT = process.env.PORT || 3000;
 
+// Simple test endpoint to force Railway deployment
+app.get('/api/railway-test', (req, res) => {
+    res.json({ 
+        message: 'Railway deployment test successful',
+        timestamp: new Date().toISOString(),
+        mongoDB: process.env.MONGODB_URI ? 'Present' : 'Missing'
+    });
+});
+
 // MongoDB Connection - Make it more robust
 const connectDB = async () => {
     try {
