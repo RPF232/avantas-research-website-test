@@ -114,6 +114,18 @@ app.get('/api/trending-news', async (req, res) => {
     }
 });
 
+// Test endpoint to check environment variables
+app.get('/api/test-env', (req, res) => {
+    res.json({
+        hasMongoDB: !!process.env.MONGODB_URI,
+        mongoDBLength: process.env.MONGODB_URI ? process.env.MONGODB_URI.length : 0,
+        mongoDBStart: process.env.MONGODB_URI ? process.env.MONGODB_URI.substring(0, 20) : 'none',
+        hasJWT: !!process.env.JWT_SECRET,
+        hasStripe: !!process.env.STRIPE_SECRET_KEY,
+        hasEmail: !!process.env.EMAIL_USER
+    });
+});
+
 // Start server
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
