@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Newsletter Subscribers - Admin</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .container {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #2C2C2C;
+            margin-bottom: 20px;
+        }
+        .subscriber-list {
+            list-style: none;
+            padding: 0;
+        }
+        .subscriber-item {
+            padding: 10px;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .subscriber-item:last-child {
+            border-bottom: none;
+        }
+        .subscriber-email {
+            color: #333;
+        }
+        .subscriber-date {
+            color: #666;
+            font-size: 0.9em;
+        }
+        .stats {
+            margin-bottom: 20px;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 4px;
+        }
+        .download-btn {
+            background: #2C2C2C;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-bottom: 20px;
+        }
+        .download-btn:hover {
+            background: #1a1a1a;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Newsletter Subscribers</h1>
+        
+        <div class="stats">
+            Total Subscribers: <span id="total-subscribers">0</span>
+        </div>
+
+        <button class="download-btn" onclick="downloadSubscribers()">Download Subscriber List</button>
+        
+        <ul class="subscriber-list" id="subscriber-list">
+            <!-- Subscribers will be loaded here -->
+        </ul>
+    </div>
+
+    <script>
+        // Load subscribers from the JSON file
+        async function loadSubscribers() {
+            try {
+                const response = await fetch(getApiUrl('/api/subscriptions.json');
+                const subscribers = await response.json();
+                
+                const subscriberList = document.getElementById('subscriber-list');
+                document.getElementById('total-subscribers').textContent = subscribers.length;
+                
+                subscriberList.innerHTML = subscribers.map(email => `
+                    <li class="subscriber-item">
+                        <span class="subscriber-email">${email}</span>
+                    </li>
+                `).join('');
+            } catch (error) {
+                console.error('Error loading subscribers:', error);
+            }
+        }
+
+        // Download subscribers as CSV
+        function downloadSubscribers() {
+            fetch(getApiUrl('/api/subscriptions.json')
+                .then(response => response.json())
+                .then(subscribers => {
+                    const csv = 'Email Address\n' + subscribers.join('\n');
+                    const blob = new Blob([csv], { type: 'text/csv' });
+                    const url = window.URL.createObjectURL(blob);
+                    const a = document.createElement('a');
+                    a.href = url;
+                    a.download = 'newsletter_subscribers.csv';
+                    a.click();
+                    window.URL.revokeObjectURL(url);
+                })
+                .catch(error => console.error('Error downloading subscribers:', error));
+        }
+
+        // Load subscribers when page loads
+        loadSubscribers();
+    </script>
+</body>
+</html> 

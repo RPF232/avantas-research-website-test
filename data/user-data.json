@@ -1,0 +1,28 @@
+{
+  "users": [
+    {
+      "id": "1753199088297",
+      "email": "test@example.com",
+      "timestamp": "2025-07-22T15:44:48.297Z",
+      "premiumSignups": [
+        {
+          "plan": "premium-package",
+          "source": "test",
+          "timestamp": "2025-07-22T15:44:48.297Z"
+        }
+      ]
+    },
+    {
+      "id": "1753199169909",
+      "email": "test-stripe@example.com",
+      "timestamp": "2025-07-22T15:46:09.909Z",
+      "premiumSignups": [
+        {
+          "plan": "premium-package",
+          "source": "stripe-test",
+          "timestamp": "2025-07-22T15:46:09.909Z"
+        }
+      ]
+    }
+  ]
+}
