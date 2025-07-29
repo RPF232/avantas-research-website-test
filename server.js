@@ -129,4 +129,5 @@ app.get('/api/trending-news', async (req, res) => {
 // Start server
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
+    console.log('Railway deployment test - MongoDB URI check:', process.env.MONGODB_URI ? 'Present' : 'Missing');
 }); 
