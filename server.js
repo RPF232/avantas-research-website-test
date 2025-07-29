@@ -14,7 +14,11 @@ const connectDB = async () => {
         if (process.env.MONGODB_URI) {
             await mongoose.connect(process.env.MONGODB_URI, {
                 useNewUrlParser: true,
-                useUnifiedTopology: true
+                useUnifiedTopology: true,
+                serverSelectionTimeoutMS: 30000, // 30 seconds
+                socketTimeoutMS: 45000, // 45 seconds
+                bufferCommands: false,
+                bufferMaxEntries: 0
             });
             console.log('Connected to MongoDB Atlas');
         } else {
